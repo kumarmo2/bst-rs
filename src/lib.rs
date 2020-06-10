@@ -54,7 +54,7 @@ where
         };
         BstIterator {
             stack: Vec::new(),
-            node,
+            node: node,
         }
     }
     pub fn head(&self) -> Option<T> {
@@ -92,11 +92,11 @@ where
             } else {
                 let is_right_tree_available;
                 {
-                    if let Some(_) = curr.borrow().right {
-                        is_right_tree_available = true;
+                    is_right_tree_available = if let Some(_) = curr.borrow().right {
+                        true
                     } else {
-                        is_right_tree_available = false;
-                    }
+                        false
+                    };
                 }
                 if !is_right_tree_available {
                     let new_node = Node::new(val);
@@ -150,7 +150,6 @@ where
                 let curr = self.stack.pop().unwrap();
                 let to_return = curr.borrow().val;
                 self.node = if let Some(next) = curr.borrow().right.as_ref() {
-                    // self.stack.push(Rc::clone(next));
                     Some(Rc::clone(next))
                 } else {
                     None
